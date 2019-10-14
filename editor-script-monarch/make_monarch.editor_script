@@ -2,6 +2,15 @@
 
 local M = {}
 
+-- Need to source the bash_profile ourselves to add the users 
+-- environment variables such as his extended PATH
+local function command_workaround()
+    if editor.platform == "x86_64-darwin" then
+        return "./editor-script-monarch/scripts/extend_path.sh"
+    end
+    return "python"
+end
+
 local function unpack(t, i)
     i = i or 1
     if t[i] ~= nil then
@@ -26,12 +35,12 @@ function M.get_commands()
                 return ends_with(path, ".gui")
             end,
             run = function(opts)
-                local path = editor.get(opts.selection, "path")
+                local path = '"' .. editor.get(opts.selection, "path") .. '"'
                 
                 return {
                     {
                         action = "shell", 
-                        command = {"python", "./editor-script-monarch/scripts/create_monarch_scene.py", path}
+                        command = {command_workaround(), "./editor-script-monarch/scripts/create_monarch_scene.py", path}
                     }
                 }
             end
