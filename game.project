@@ -1,0 +1,6 @@
+[project]
+title = editor-script-monarch
+
+[library]
+include_dirs = editor-script-monarch
+
