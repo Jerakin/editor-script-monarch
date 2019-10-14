@@ -10,4 +10,4 @@ You can easily install deftree with
 `pip install deftree`
 
 ## Editor Script
-This script adds a menu option when bringing up the context menu on a gui scene. When used it creates a collection and a gui_script (which adds the "require monarch" and "acquire_input_focus" automatically). It adds the gui_script to the selected gui scene and adds the gui scene to the newly created collection.
+This script adds a menu option to the context menu on a gui scene. When used it creates a collection and a gui_script (which adds the "require monarch" and "acquire_input_focus" automatically). It also adds the gui_script to the selected gui scene and adds the gui scene to the newly created collection.
