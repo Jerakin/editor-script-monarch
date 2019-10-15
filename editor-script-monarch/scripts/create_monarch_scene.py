@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+from os.path import exists
+
+_log_file = "python_log.txt"
+
+if exists(_log_file):
+    import sys
+    import traceback
+
+    def log_exception(a, b, tb):
+        with open("python_log.txt", "a") as fp:
+            traceback.print_tb(tb, file=fp)
+
+    sys.stdout = open("python_log.txt", 'w')
+    sys.excepthook = log_exception
+
 
 from pathlib import Path
 import sys
@@ -7,7 +22,7 @@ import deftree
 
 gui_script_content = """local monarch = require "monarch.monarch"\n
 function init(self)
-	msg.post(".", "acquire_input_focus")
+\tmsg.post(".", "acquire_input_focus")
 end\n
 function final(self)
 end\n
@@ -21,12 +36,14 @@ function on_reload(self)
 end\n
 """
 
-_anchor = Path("/").anchor
+
 def _fix_path(path):
     """We have to remove the anchor if there is one"""
+    _anchor = Path("/").anchor
     if path.anchor == _anchor:
         path = Path(str(path)[1:])
     return Path().cwd() / path
+
 
 def components(name, component):
     root = deftree.Element("components")
@@ -35,6 +52,7 @@ def components(name, component):
     root.append(vector("position"))
     root.append(vector("rotation", w=1.0))
     return root
+
 
 def vector(name, x=0.0, y=0.0, z=0.0, w=None):
     root = deftree.Element(name)
@@ -45,6 +63,7 @@ def vector(name, x=0.0, y=0.0, z=0.0, w=None):
         root.add_attribute("w", w)
     return root
 
+
 def embedded_instance(name):
     root = deftree.Element("embedded_instances")
     root.add_attribute("id", name)
@@ -53,6 +72,7 @@ def embedded_instance(name):
     root.append(vector("rotation", w=1.0))
     root.append(vector("scale3", 1.0, 1.0, 1.0))
     return root
+
 
 def collection(name, gui_scene):
     tree = deftree.DefTree()
@@ -65,11 +85,13 @@ def collection(name, gui_scene):
     root.append(go)
     return tree
 
+
 def set_gui_script_path(gui_path, script_path):
     tree = deftree.parse(gui_path)
     root = tree.get_root()
     root.set_attribute("script", script_path.as_posix())
     tree.write()
+
 
 def main(path):
     path = Path(path)
@@ -79,6 +101,6 @@ def main(path):
     new_collection = collection(path.stem, path.as_posix())
     new_collection.write(absolute_path.with_suffix(".collection"))
 
+
 if __name__ == '__main__':
     main(sys.argv[-1])
-
