@@ -40,7 +40,7 @@ function M.get_commands()
                 return {
                     {
                         action = "shell", 
-                        command = {command_workaround(), "./editor-script-monarch/scripts/create_monarch_scene.py", path}
+                        command = {command_workaround(), "-u", "-c", editor.get("/editor-script-monarch/scripts/create_monarch_scene.py", "text"), path}
                     }
                 }
             end
