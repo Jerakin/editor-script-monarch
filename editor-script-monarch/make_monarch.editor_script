@@ -54,7 +54,7 @@ function M.get_commands()
                     local gui_text = gui_file:read("*a")
                     gui_file:close()
                     
-                    gui_text = string.gsub(gui_text, [[script: ".*"]], [[script: "]] .. main .. filename:match("(.+)%..+") .. ".gui_script" .. [["]])
+                    gui_text = string.gsub(gui_text, 'script: "%.*"', [[script: "]] .. main .. filename:match("(.+)%..+") .. ".gui_script" .. [["]])
                     
                     gui_file = io.open("." .. path, "w")
                     gui_file:write(gui_text)
