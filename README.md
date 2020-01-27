@@ -1,3 +1,5 @@
+# ARCHIVED! This script have been moved into the monarch repository.
+
 # Monarch
 
 ## Install
